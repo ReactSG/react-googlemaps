@@ -1,15 +1,16 @@
 {
-  "name": "@react-google-maps/api",
+  "name": "@reactsg/googlemaps",
   "sideEffects": false,
-  "version": "2.19.3",
-  "description": "React.js Google Maps API integration",
+  "version": "24.7.1",
+  "description": "React.js Google Maps",
   "license": "MIT",
   "author": {
-    "name": "Alexey Lyakhov",
-    "email": "justfly1984@gmail.com",
-    "url": "https://github.com/JustFly1984"
+    "name": "Young Yang",
+    "email": "young@leduong.com",
+    "url": "https://github.com/ReactSG"
   },
   "contributors": [
+    "Alexey Lyakhov <justfly1984@gmail.com> (https://github.com/JustFly1984)",
     "Uri Klar <uriklar@gmail.com> (https://github.com/uriklar)",
     "Ignat Awwit <ignatius.awwit@gmail.com> (https://github.com/awwit)",
     "Ivan Konev <ivankonev@gmail.com> (https://github.com/ivankonev)",
@@ -18,11 +19,11 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/JustFly1984/react-google-maps-api.git",
+    "url": "https://github.com/ReactSG/react-googlemaps.git",
     "directory": "packages/react-google-maps-api"
   },
   "bugs": {
-    "url": "https://github.com/JustFly1984/react-google-maps-api/issues"
+    "url": "https://github.com/ReactSG/react-googlemaps.git/issues"
   },
   "homepage": "https://react-google-maps-api-docs.netlify.app",
   "publishConfig": {
