@@ -1,11 +1,12 @@
 function isGoogleFontStyle(element: Node): boolean {
   // 'Roboto' or 'Google Sans Text' font download
-  const href = (element as HTMLLinkElement).href;
+  const href = (element as HTMLLinkElement).href
   if (
-    href && (
-      href.indexOf('https://fonts.googleapis.com/css?family=Roboto') === 0 ||
-      href.indexOf('https://fonts.googleapis.com/css?family=Google+Sans+Text') === 0
-    )
+    href &&
+    (href.indexOf('https://fonts.googleapis.com/css?family=Roboto') === 0 ||
+      href.indexOf(
+        'https://fonts.googleapis.com/css?family=Google+Sans+Text'
+      ) === 0)
   ) {
     return true
   }
@@ -65,7 +66,7 @@ function isGoogleFontStyle(element: Node): boolean {
 }
 
 // Preventing the Google Maps library from downloading an extra font
-export function preventGoogleFonts (): void {
+export function preventGoogleFonts(): void {
   // we override these methods only for one particular head element
   // default methods for other elements are not affected
   const head = document.getElementsByTagName('head')[0]
@@ -98,5 +99,4 @@ export function preventGoogleFonts (): void {
       return textNode
     }
   }
-
 }

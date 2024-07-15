@@ -11,48 +11,49 @@ import {
   type ContextType,
   type ReactPortal,
   type CSSProperties,
-} from 'react'
-import * as ReactDOM from 'react-dom'
-import invariant from 'invariant'
+} from 'react';
+import * as ReactDOM from 'react-dom';
+import invariant from 'invariant';
 
-import MapContext from '../../map-context'
+import MapContext from '../../map-context';
 
 import {
   getLayoutStyles,
   arePositionsEqual,
   getOffsetOverride,
-} from './dom-helper'
+} from './dom-helper';
 
-import { createOverlay } from './Overlay'
+import { createOverlay } from './Overlay';
 
 interface OverlayViewState {
-  paneEl: Element | null
-  containerStyle: CSSProperties
+  paneEl: Element | null;
+  containerStyle: CSSProperties;
 }
 
 function convertToLatLngString(
   latLngLike?: google.maps.LatLng | google.maps.LatLngLiteral | null | undefined
 ) {
   if (!latLngLike) {
-    return ''
+    return '';
   }
 
   const latLng =
     latLngLike instanceof google.maps.LatLng
       ? latLngLike
-      : new google.maps.LatLng(latLngLike.lat, latLngLike.lng)
+      : new google.maps.LatLng(latLngLike.lat, latLngLike.lng);
 
-  return latLng + ''
+  return latLng + '';
 }
 
 function convertToLatLngBoundsString(
   latLngBoundsLike?:
     | google.maps.LatLngBounds
     | google.maps.LatLngBoundsLiteral
-    | null | undefined
+    | null
+    | undefined
 ) {
   if (!latLngBoundsLike) {
-    return ''
+    return '';
   }
 
   const latLngBounds =
@@ -61,34 +62,34 @@ function convertToLatLngBoundsString(
       : new google.maps.LatLngBounds(
           new google.maps.LatLng(latLngBoundsLike.south, latLngBoundsLike.east),
           new google.maps.LatLng(latLngBoundsLike.north, latLngBoundsLike.west)
-        )
+        );
 
-  return latLngBounds + ''
+  return latLngBounds + '';
 }
 
-export type PaneNames = keyof google.maps.MapPanes
+export type PaneNames = keyof google.maps.MapPanes;
 export interface OverlayViewProps {
-  children?: ReactNode | undefined
+  children?: ReactNode | undefined;
   // required
-  mapPaneName: PaneNames
-  position?: google.maps.LatLng | google.maps.LatLngLiteral | undefined
+  mapPaneName: PaneNames;
+  position?: google.maps.LatLng | google.maps.LatLngLiteral | undefined;
   getPixelPositionOffset?:
     | ((offsetWidth: number, offsetHeight: number) => { x: number; y: number })
-    | undefined
+    | undefined;
   bounds?:
     | google.maps.LatLngBounds
     | google.maps.LatLngBoundsLiteral
-    | undefined
-  zIndex?: number | undefined
-  onLoad?: ((overlayView: google.maps.OverlayView) => void) | undefined
-  onUnmount?: ((overlayView: google.maps.OverlayView) => void) | undefined
+    | undefined;
+  zIndex?: number | undefined;
+  onLoad?: ((overlayView: google.maps.OverlayView) => void) | undefined;
+  onUnmount?: ((overlayView: google.maps.OverlayView) => void) | undefined;
 }
 
-export const FLOAT_PANE: PaneNames = `floatPane`
-export const MAP_PANE: PaneNames = `mapPane`
-export const MARKER_LAYER: PaneNames = `markerLayer`
-export const OVERLAY_LAYER: PaneNames = `overlayLayer`
-export const OVERLAY_MOUSE_TARGET: PaneNames = `overlayMouseTarget`
+export const FLOAT_PANE: PaneNames = `floatPane`;
+export const MAP_PANE: PaneNames = `mapPane`;
+export const MARKER_LAYER: PaneNames = `markerLayer`;
+export const OVERLAY_LAYER: PaneNames = `overlayLayer`;
+export const OVERLAY_MOUSE_TARGET: PaneNames = `overlayMouseTarget`;
 
 function OverlayViewFunctional({
   position,
@@ -100,12 +101,12 @@ function OverlayViewFunctional({
   getPixelPositionOffset,
   children,
 }: OverlayViewProps) {
-  const map = useContext(MapContext)
+  const map = useContext(MapContext);
   const container = useMemo(() => {
-    const div = document.createElement('div')
-    div.style.position = 'absolute'
-    return div
-  }, [])
+    const div = document.createElement('div');
+    div.style.position = 'absolute';
+    return div;
+  }, []);
 
   const overlay = useMemo(() => {
     return createOverlay(
@@ -114,41 +115,41 @@ function OverlayViewFunctional({
       position,
       bounds,
       getPixelPositionOffset
-    )
-  }, [container, mapPaneName, position, bounds])
+    );
+  }, [container, mapPaneName, position, bounds]);
 
   useEffect(() => {
-    onLoad?.(overlay)
-    overlay?.setMap(map)
+    onLoad?.(overlay);
+    overlay?.setMap(map);
     return () => {
-      onUnmount?.(overlay)
-      overlay?.setMap(null)
-    }
-  }, [map, overlay])
+      onUnmount?.(overlay);
+      overlay?.setMap(null);
+    };
+  }, [map, overlay]);
 
   // to move the container to the foreground and background
   useEffect(() => {
-    container.style.zIndex = `${zIndex}`
-  }, [zIndex, container])
+    container.style.zIndex = `${zIndex}`;
+  }, [zIndex, container]);
 
-  return ReactDOM.createPortal(children, container)
+  return ReactDOM.createPortal(children, container);
 }
 
-export const OverlayViewF = memo(OverlayViewFunctional)
+export const OverlayViewF = memo(OverlayViewFunctional);
 
 export class OverlayView extends PureComponent<
   OverlayViewProps,
   OverlayViewState
 > {
-  static FLOAT_PANE: PaneNames = `floatPane`
-  static MAP_PANE: PaneNames = `mapPane`
-  static MARKER_LAYER: PaneNames = `markerLayer`
-  static OVERLAY_LAYER: PaneNames = `overlayLayer`
-  static OVERLAY_MOUSE_TARGET: PaneNames = `overlayMouseTarget`
+  static FLOAT_PANE: PaneNames = `floatPane`;
+  static MAP_PANE: PaneNames = `mapPane`;
+  static MARKER_LAYER: PaneNames = `markerLayer`;
+  static OVERLAY_LAYER: PaneNames = `overlayLayer`;
+  static OVERLAY_MOUSE_TARGET: PaneNames = `overlayMouseTarget`;
 
-  static override contextType = MapContext
+  static override contextType = MapContext;
 
-  declare context: ContextType<typeof MapContext>
+  declare context: ContextType<typeof MapContext>;
 
   override state: OverlayViewState = {
     paneEl: null,
@@ -156,40 +157,40 @@ export class OverlayView extends PureComponent<
       // set initial position
       position: 'absolute',
     },
-  }
+  };
 
-  overlayView: google.maps.OverlayView
-  containerRef: RefObject<HTMLDivElement>
+  overlayView: google.maps.OverlayView;
+  containerRef: RefObject<HTMLDivElement>;
 
   updatePane = (): void => {
-    const mapPaneName = this.props.mapPaneName
+    const mapPaneName = this.props.mapPaneName;
 
     // https://developers.google.com/maps/documentation/javascript/3.exp/reference#MapPanes
-    const mapPanes = this.overlayView.getPanes()
+    const mapPanes = this.overlayView.getPanes();
     invariant(
       !!mapPaneName,
       `OverlayView requires props.mapPaneName but got %s`,
       mapPaneName
-    )
+    );
 
     if (mapPanes) {
       this.setState({
         paneEl: mapPanes[mapPaneName],
-      })
+      });
     } else {
       this.setState({
         paneEl: null,
-      })
+      });
     }
-  }
+  };
 
   onAdd = (): void => {
-    this.updatePane()
-    this.props.onLoad?.(this.overlayView)
-  }
+    this.updatePane();
+    this.props.onLoad?.(this.overlayView);
+  };
 
   onPositionElement = (): void => {
-    const mapCanvasProjection = this.overlayView.getProjection()
+    const mapCanvasProjection = this.overlayView.getProjection();
 
     const offset = {
       x: 0,
@@ -200,92 +201,92 @@ export class OverlayView extends PureComponent<
             this.props.getPixelPositionOffset
           )
         : {}),
-    }
+    };
 
     const layoutStyles = getLayoutStyles(
       mapCanvasProjection,
       offset,
       this.props.bounds,
       this.props.position
-    )
+    );
 
-    const { left, top, width, height } = this.state.containerStyle
+    const { left, top, width, height } = this.state.containerStyle;
 
     if (!arePositionsEqual(layoutStyles, { left, top, width, height })) {
       this.setState({
         containerStyle: {
-          top: layoutStyles.top || 0,
-          left: layoutStyles.left || 0,
-          width: layoutStyles.width || 0,
-          height: layoutStyles.height || 0,
+          top: layoutStyles.top ?? 0,
+          left: layoutStyles.left ?? 0,
+          width: layoutStyles.width ?? 0,
+          height: layoutStyles.height ?? 0,
           position: 'absolute',
         },
-      })
+      });
     }
-  }
+  };
 
   draw = (): void => {
-    this.onPositionElement()
-  }
+    this.onPositionElement();
+  };
 
   onRemove = (): void => {
     this.setState(() => ({
       paneEl: null,
-    }))
+    }));
 
-    this.props.onUnmount?.(this.overlayView)
-  }
+    this.props.onUnmount?.(this.overlayView);
+  };
 
   constructor(props: OverlayViewProps) {
-    super(props)
+    super(props);
 
-    this.containerRef = createRef()
+    this.containerRef = createRef();
     // You must implement three methods: onAdd(), draw(), and onRemove().
-    const overlayView = new google.maps.OverlayView()
-    overlayView.onAdd = this.onAdd
-    overlayView.draw = this.draw
-    overlayView.onRemove = this.onRemove
-    this.overlayView = overlayView
+    const overlayView = new google.maps.OverlayView();
+    overlayView.onAdd = this.onAdd;
+    overlayView.draw = this.draw;
+    overlayView.onRemove = this.onRemove;
+    this.overlayView = overlayView;
   }
 
   override componentDidMount(): void {
-    this.overlayView.setMap(this.context)
+    this.overlayView.setMap(this.context);
   }
 
   override componentDidUpdate(prevProps: OverlayViewProps): void {
-    const prevPositionString = convertToLatLngString(prevProps.position)
-    const positionString = convertToLatLngString(this.props.position)
-    const prevBoundsString = convertToLatLngBoundsString(prevProps.bounds)
-    const boundsString = convertToLatLngBoundsString(this.props.bounds)
+    const prevPositionString = convertToLatLngString(prevProps.position);
+    const positionString = convertToLatLngString(this.props.position);
+    const prevBoundsString = convertToLatLngBoundsString(prevProps.bounds);
+    const boundsString = convertToLatLngBoundsString(this.props.bounds);
 
     if (
       prevPositionString !== positionString ||
       prevBoundsString !== boundsString
     ) {
-      this.overlayView.draw()
+      this.overlayView.draw();
     }
     if (prevProps.mapPaneName !== this.props.mapPaneName) {
-      this.updatePane()
+      this.updatePane();
     }
   }
 
   override componentWillUnmount(): void {
-    this.overlayView.setMap(null)
+    this.overlayView.setMap(null);
   }
 
   override render(): ReactPortal | ReactNode {
-    const paneEl = this.state.paneEl
+    const paneEl = this.state.paneEl;
     if (paneEl) {
       return ReactDOM.createPortal(
         <div ref={this.containerRef} style={this.state.containerStyle}>
           {Children.only(this.props.children)}
         </div>,
         paneEl
-      )
+      );
     } else {
-      return null
+      return null;
     }
   }
 }
 
-export default OverlayView
+export default OverlayView;

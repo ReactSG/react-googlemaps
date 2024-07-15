@@ -8,7 +8,7 @@ import {
   GoogleMap,
   DirectionsService,
   DirectionsRenderer,
-} from '@react-google-maps/api';
+} from '@reactsg/googlemaps';
 
 function Directions(): JSX.Element {
   const [response, setResponse] = useState<google.maps.DirectionsResult | null>(

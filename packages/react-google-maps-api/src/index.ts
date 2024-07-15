@@ -157,9 +157,7 @@ export {
   type AutocompleteProps,
 } from './components/places/Autocomplete'
 
-export {
-  type Libraries,
-} from './utils/make-load-script-url'
+export { type Libraries } from './utils/make-load-script-url'
 
 export { default as MapContext, useGoogleMap } from './map-context'
 

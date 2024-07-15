@@ -9,4 +9,4 @@
 
 @react-google-maps/infobox
 
-> This library is dependency of main project @react-google-maps/api
+> This library is dependency of main project @reactsg/googlemaps

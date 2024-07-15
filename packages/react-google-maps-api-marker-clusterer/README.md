@@ -9,4 +9,4 @@
 
 @react-google-maps/marker-clusterer
 
-> This library is dependency of main project @react-google-maps/api
+> This library is dependency of main project @reactsg/googlemaps

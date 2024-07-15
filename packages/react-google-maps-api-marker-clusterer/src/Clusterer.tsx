@@ -136,12 +136,12 @@ export class Clusterer implements google.maps.OverlayView {
     this.listeners = []
     this.activeMap = null
     this.ready = false
-    this.gridSize = optOptions.gridSize || 60
-    this.minClusterSize = optOptions.minimumClusterSize || 2
-    this.maxZoom = optOptions.maxZoom || null
-    this.styles = optOptions.styles || []
+    this.gridSize = optOptions.gridSize ?? 60
+    this.minClusterSize = optOptions.minimumClusterSize ?? 2
+    this.maxZoom = optOptions.maxZoom ?? null
+    this.styles = optOptions.styles ?? []
 
-    this.title = optOptions.title || ''
+    this.title = optOptions.title ?? ''
 
     this.zoomOnClick = true
 
@@ -166,19 +166,19 @@ export class Clusterer implements google.maps.OverlayView {
     if (optOptions.enableRetinaIcons !== undefined) {
       this.enableRetinaIcons = optOptions.enableRetinaIcons
     }
-    this.imagePath = optOptions.imagePath || IMAGE_PATH
+    this.imagePath = optOptions.imagePath ?? IMAGE_PATH
 
-    this.imageExtension = optOptions.imageExtension || IMAGE_EXTENSION
+    this.imageExtension = optOptions.imageExtension ?? IMAGE_EXTENSION
 
-    this.imageSizes = optOptions.imageSizes || IMAGE_SIZES
+    this.imageSizes = optOptions.imageSizes ?? IMAGE_SIZES
 
-    this.calculator = optOptions.calculator || CALCULATOR
+    this.calculator = optOptions.calculator ?? CALCULATOR
 
-    this.batchSize = optOptions.batchSize || BATCH_SIZE
+    this.batchSize = optOptions.batchSize ?? BATCH_SIZE
 
-    this.batchSizeIE = optOptions.batchSizeIE || BATCH_SIZE_IE
+    this.batchSizeIE = optOptions.batchSizeIE ?? BATCH_SIZE_IE
 
-    this.clusterClass = optOptions.clusterClass || CLUSTERER_CLASS
+    this.clusterClass = optOptions.clusterClass ?? CLUSTERER_CLASS
 
     if (navigator.userAgent.toLowerCase().indexOf('msie') !== -1) {
       // Try to avoid IE timeout when processing a huge number of markers:
@@ -189,9 +189,8 @@ export class Clusterer implements google.maps.OverlayView {
 
     this.setupStyles()
 
-    this.addMarkers(optMarkers, true);
-
-    (this as unknown as google.maps.OverlayView).setMap(map) // Note: this causes onAdd to be called
+    this.addMarkers(optMarkers, true)
+    ;(this as unknown as google.maps.OverlayView).setMap(map) // Note: this causes onAdd to be called
   }
 
   onZoomChanged(): void {
@@ -203,8 +202,10 @@ export class Clusterer implements google.maps.OverlayView {
     // event is triggered so the cluster markers that have been removed
     // do not get redrawn. Same goes for a zoom in at maxZoom.
     if (
-      (this as unknown as google.maps.OverlayView).getMap()?.getZoom() === ((this as unknown as google.maps.OverlayView).get('minZoom') || 0) ||
-      (this as unknown as google.maps.OverlayView).getMap()?.getZoom() === (this as unknown as google.maps.OverlayView).get('maxZoom')
+      (this as unknown as google.maps.OverlayView).getMap()?.getZoom() ===
+        ((this as unknown as google.maps.OverlayView).get('minZoom') ?? 0) ??
+      (this as unknown as google.maps.OverlayView).getMap()?.getZoom() ===
+        (this as unknown as google.maps.OverlayView).get('maxZoom')
     ) {
       google.maps.event.trigger(this, 'idle')
     }
@@ -226,16 +227,8 @@ export class Clusterer implements google.maps.OverlayView {
     if (map !== null) {
       // Add the map event listeners
       this.listeners = [
-        google.maps.event.addListener(
-          map,
-          'zoom_changed',
-          this.onZoomChanged
-        ),
-        google.maps.event.addListener(
-          map,
-          'idle',
-          this.onIdle
-        ),
+        google.maps.event.addListener(map, 'zoom_changed', this.onZoomChanged),
+        google.maps.event.addListener(map, 'idle', this.onIdle),
       ]
     }
   }
@@ -267,41 +260,80 @@ export class Clusterer implements google.maps.OverlayView {
     this.ready = false
   }
 
-  draw(): void { return }
+  draw(): void {
+    return
+  }
 
-  getMap(): null { return null }
+  getMap(): null {
+    return null
+  }
 
-  getPanes(): null { return null }
+  getPanes(): null {
+    return null
+  }
 
-  getProjection()  {
+  getProjection() {
     return {
-      fromContainerPixelToLatLng(): null { return null },
-      fromDivPixelToLatLng(): null { return null},
-      fromLatLngToContainerPixel(): null { return null},
-      fromLatLngToDivPixel(): null { return null},
-      getVisibleRegion(): null { return null },
-      getWorldWidth(): number { return 0 }
+      fromContainerPixelToLatLng(): null {
+        return null
+      },
+      fromDivPixelToLatLng(): null {
+        return null
+      },
+      fromLatLngToContainerPixel(): null {
+        return null
+      },
+      fromLatLngToDivPixel(): null {
+        return null
+      },
+      getVisibleRegion(): null {
+        return null
+      },
+      getWorldWidth(): number {
+        return 0
+      },
     }
   }
 
-  setMap(): void { return }
+  setMap(): void {
+    return
+  }
 
   addListener() {
     return {
-      remove() { return }
+      remove() {
+        return
+      },
     }
   }
 
-  bindTo(): void { return }
+  bindTo(): void {
+    return
+  }
 
-  get(): void { return }
+  get(): void {
+    return
+  }
 
-  notify(): void { return }
+  notify(): void {
+    return
+  }
 
-  set(): void { return }
-  setValues(): void { return }
-  unbind(): void { return }
-  unbindAll(): void { return }
+  set(): void {
+    return
+  }
+
+  setValues(): void {
+    return
+  }
+
+  unbind(): void {
+    return
+  }
+
+  unbindAll(): void {
+    return
+  }
 
   setupStyles(): void {
     if (this.styles.length > 0) {
@@ -311,8 +343,8 @@ export class Clusterer implements google.maps.OverlayView {
     for (let i = 0; i < this.imageSizes.length; i++) {
       this.styles.push({
         url: `${this.imagePath + (i + 1)}.${this.imageExtension}`,
-        height: this.imageSizes[i] || 0,
-        width: this.imageSizes[i] || 0,
+        height: this.imageSizes[i] ?? 0,
+        width: this.imageSizes[i] ?? 0,
       })
     }
   }
@@ -335,7 +367,6 @@ export class Clusterer implements google.maps.OverlayView {
     if (map !== null && 'fitBounds' in map) {
       map.fitBounds(bounds)
     }
-
   }
 
   getGridSize(): number {
@@ -556,7 +587,7 @@ export class Clusterer implements google.maps.OverlayView {
     let removed = false
 
     for (const marker of markers) {
-      removed = removed || this.removeMarker_(marker)
+      removed = removed ?? this.removeMarker_(marker)
     }
 
     if (!optNoDraw && removed) {
@@ -590,13 +621,20 @@ export class Clusterer implements google.maps.OverlayView {
     }, 0)
   }
 
-  getExtendedBounds(bounds: google.maps.LatLngBounds): google.maps.LatLngBounds {
-    const projection = (this as unknown as google.maps.OverlayView).getProjection()
+  getExtendedBounds(
+    bounds: google.maps.LatLngBounds
+  ): google.maps.LatLngBounds {
+    const projection = (
+      this as unknown as google.maps.OverlayView
+    ).getProjection()
 
     // Convert the points to pixels and the extend out by the grid size.
     const trPix = projection.fromLatLngToDivPixel(
       // Turn the bounds into latlng.
-      new google.maps.LatLng(bounds.getNorthEast().lat(), bounds.getNorthEast().lng())
+      new google.maps.LatLng(
+        bounds.getNorthEast().lat(),
+        bounds.getNorthEast().lng()
+      )
     )
 
     if (trPix !== null) {
@@ -606,14 +644,16 @@ export class Clusterer implements google.maps.OverlayView {
 
     const blPix = projection.fromLatLngToDivPixel(
       // Turn the bounds into latlng.
-      new google.maps.LatLng(bounds.getSouthWest().lat(), bounds.getSouthWest().lng())
+      new google.maps.LatLng(
+        bounds.getSouthWest().lat(),
+        bounds.getSouthWest().lng()
+      )
     )
 
     if (blPix !== null) {
       blPix.x -= this.gridSize
       blPix.y += this.gridSize
     }
-
 
     // Extend the bounds to contain the new bounds.
     if (trPix !== null) {
@@ -627,15 +667,12 @@ export class Clusterer implements google.maps.OverlayView {
 
     if (blPix !== null) {
       // Convert the pixel points back to LatLng sw
-      const point2 =  projection.fromDivPixelToLatLng(blPix)
+      const point2 = projection.fromDivPixelToLatLng(blPix)
 
       if (point2 !== null) {
-        bounds.extend(
-          point2
-        )
+        bounds.extend(point2)
       }
     }
-
 
     return bounds
   }
@@ -663,7 +700,10 @@ export class Clusterer implements google.maps.OverlayView {
     }
   }
 
-  distanceBetweenPoints(p1: google.maps.LatLng, p2: google.maps.LatLng): number {
+  distanceBetweenPoints(
+    p1: google.maps.LatLng,
+    p2: google.maps.LatLng
+  ): number {
     const R = 6371 // Radius of the Earth in km
 
     const dLat = ((p2.lat() - p1.lat()) * Math.PI) / 180
@@ -679,7 +719,10 @@ export class Clusterer implements google.maps.OverlayView {
     return R * (2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)))
   }
 
-  isMarkerInBounds(marker: MarkerExtended, bounds: google.maps.LatLngBounds): boolean {
+  isMarkerInBounds(
+    marker: MarkerExtended,
+    bounds: google.maps.LatLngBounds
+  ): boolean {
     const position = marker.getPosition()
 
     if (position) {
@@ -754,12 +797,13 @@ export class Clusterer implements google.maps.OverlayView {
 
     const bounds = map !== null && 'getBounds' in map ? map.getBounds() : null
 
-    const zoom =  map?.getZoom() || 0
+    const zoom = map?.getZoom() ?? 0
     // Get our current map view bounds.
     // Create a new bounds object so we don't affect the map.
     //
     // See Comments 9 & 11 on Issue 3651 relating to this workaround for a Google Maps bug:
-    const mapBounds = zoom > 3
+    const mapBounds =
+      zoom > 3
         ? new google.maps.LatLngBounds(
             bounds?.getSouthWest(),
             bounds?.getNorthEast()
@@ -776,18 +820,20 @@ export class Clusterer implements google.maps.OverlayView {
     for (let i = iFirst; i < iLast; i++) {
       const marker = this.markers[i]
 
-      if (marker && !marker.isAdded && this.isMarkerInBounds(marker, extendedMapBounds) && (!this.ignoreHidden || (this.ignoreHidden && marker.getVisible()))) {
+      if (
+        marker &&
+        !marker.isAdded &&
+        this.isMarkerInBounds(marker, extendedMapBounds) &&
+        (!this.ignoreHidden ?? (this.ignoreHidden && marker.getVisible()))
+      ) {
         this.addToClosestCluster(marker)
       }
     }
 
     if (iLast < this.markers.length) {
-      this.timerRefStatic = window.setTimeout(
-        () => {
-          this.createClusters(iLast)
-        },
-        0
-      )
+      this.timerRefStatic = window.setTimeout(() => {
+        this.createClusters(iLast)
+      }, 0)
     } else {
       this.timerRefStatic = null
 
@@ -806,10 +852,15 @@ export class Clusterer implements google.maps.OverlayView {
     }
   }
 
-  extend<A extends typeof Clusterer | typeof ClusterIcon>(obj1: A, obj2: typeof google.maps.OverlayView): A {
-    return function applyExtend(this: A, object: typeof google.maps.OverlayView): A {
+  extend<A extends typeof Clusterer | typeof ClusterIcon>(
+    obj1: A,
+    obj2: typeof google.maps.OverlayView
+  ): A {
+    return function applyExtend(
+      this: A,
+      object: typeof google.maps.OverlayView
+    ): A {
       for (const property in object.prototype) {
-
         // eslint-disable-next-line @typescript-eslint/ban-types
         const prop = property as keyof google.maps.OverlayView & (string & {})
 

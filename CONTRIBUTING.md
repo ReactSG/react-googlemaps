@@ -17,7 +17,7 @@ Ivan Konev <ivankonev@gmail.com>
 
 Inside root folder you will find packages:
 
-1. @react-google-maps/api
+1. @reactsg/googlemaps
 2. @react-google-maps/infobox
 3. @react-google-maps/marker-clusterer
 4. gatsby-example [https://github.com/gatsbyjs/gatsby/issues](https://github.com/gatsbyjs/gatsby/issues)

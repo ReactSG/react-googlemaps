@@ -55,7 +55,9 @@ class ScriptLoaded extends Component<ScriptLoadedProps, ScriptLoadedState> {
       return <SpanIntro />
     }
 
-    return this.props.children instanceof Function ? this.props.children() : this.props.children
+    return this.props.children instanceof Function
+      ? this.props.children()
+      : this.props.children
   }
 }
 

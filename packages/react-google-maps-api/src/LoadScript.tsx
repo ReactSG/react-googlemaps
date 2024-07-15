@@ -5,7 +5,10 @@ import { injectScript } from './utils/injectscript'
 import { preventGoogleFonts } from './utils/prevent-google-fonts'
 
 import { isBrowser } from './utils/isbrowser'
-import { LoadScriptUrlOptions, makeLoadScriptUrl } from './utils/make-load-script-url'
+import {
+  LoadScriptUrlOptions,
+  makeLoadScriptUrl,
+} from './utils/make-load-script-url'
 
 let cleaningUp = false
 
@@ -14,9 +17,9 @@ interface LoadScriptState {
 }
 
 export interface LoadScriptProps extends LoadScriptUrlOptions {
-  children?: ReactNode | undefined
+  children?: ReactNode
   id: string
-  nonce?: string | undefined
+  nonce?: string
   loadingElement?: ReactNode
   onLoad?: () => void
   onError?: (error: Error) => void
@@ -28,13 +31,13 @@ export function DefaultLoadingElement(): JSX.Element {
   return <div>{`Loading...`}</div>
 }
 
-export const defaultLoadScriptProps = {
+export const DEFAULT_LOAD_SCRIPT_PROPS = {
   id: 'script-loader',
   version: 'weekly',
 }
 
 class LoadScript extends PureComponent<LoadScriptProps, LoadScriptState> {
-  public static defaultProps = defaultLoadScriptProps
+  public static readonly defaultProps = DEFAULT_LOAD_SCRIPT_PROPS
 
   check: RefObject<HTMLDivElement> = createRef()
 
@@ -52,7 +55,7 @@ class LoadScript extends PureComponent<LoadScriptProps, LoadScriptState> {
 
   override componentDidMount(): void {
     if (isBrowser) {
-      if (window.google && window.google.maps && !cleaningUp) {
+      if (window?.google?.maps && !cleaningUp) {
         console.error('google api is already presented')
 
         return
@@ -109,19 +112,15 @@ class LoadScript extends PureComponent<LoadScriptProps, LoadScriptState> {
     function promiseCallback(resolve: () => void): void {
       if (!cleaningUp) {
         resolve()
-      } else {
-        if (isBrowser) {
-          const timer = window.setInterval(function interval() {
-            if (!cleaningUp) {
-              window.clearInterval(timer)
+      } else if (isBrowser) {
+        const timer = window.setInterval(function interval() {
+          if (!cleaningUp) {
+            window.clearInterval(timer)
 
-              resolve()
-            }
-          }, 1)
-        }
+            resolve()
+          }
+        }, 1)
       }
-
-      return
     }
 
     return new Promise(promiseCallback)
@@ -131,14 +130,17 @@ class LoadScript extends PureComponent<LoadScriptProps, LoadScriptState> {
     cleaningUp = true
     const script = document.getElementById(this.props.id)
 
-    if (script && script.parentNode) {
+    if (script?.parentNode) {
       script.parentNode.removeChild(script)
     }
 
     Array.prototype.slice
       .call(document.getElementsByTagName('script'))
       .filter(function filter(script: HTMLScriptElement): boolean {
-        return typeof script.src === 'string' && script.src.includes('maps.googleapis')
+        return (
+          typeof script.src === 'string' &&
+          script.src.includes('maps.googleapis')
+        )
       })
       .forEach(function forEach(script: HTMLScriptElement): void {
         if (script.parentNode) {
@@ -150,7 +152,8 @@ class LoadScript extends PureComponent<LoadScriptProps, LoadScriptState> {
       .call(document.getElementsByTagName('link'))
       .filter(function filter(link: HTMLLinkElement): boolean {
         return (
-          link.href === 'https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Google+Sans'
+          link.href ===
+          'https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Google+Sans'
         )
       })
       .forEach(function forEach(link: HTMLLinkElement) {
@@ -180,7 +183,11 @@ class LoadScript extends PureComponent<LoadScriptProps, LoadScriptState> {
       preventGoogleFonts()
     }
 
-    invariant(!!this.props.id, 'LoadScript requires "id" prop to be a string: %s', this.props.id)
+    invariant(
+      !!this.props.id,
+      'LoadScript requires "id" prop to be a string: %s',
+      this.props.id
+    )
 
     const injectScriptOptions = {
       id: this.props.id,
@@ -202,15 +209,17 @@ class LoadScript extends PureComponent<LoadScriptProps, LoadScriptState> {
 
         return
       })
-      .catch(err => {
+      .catch((err) => {
         if (this.props.onError) {
           this.props.onError(err)
         }
 
         console.error(`
-          There has been an Error with loading Google Maps API script, please check that you provided correct google API key (${this
-            .props.googleMapsApiKey || '-'}) or Client ID (${this.props.googleMapsClientId ||
-            '-'}) to <LoadScript />
+          There has been an Error with loading Google Maps API script, please check that you provided correct google API key (${
+            this.props.googleMapsApiKey ?? '-'
+          }) or Client ID (${
+            this.props.googleMapsClientId ?? '-'
+          }) to <LoadScript />
           Otherwise it is a Network issue.
         `)
       })

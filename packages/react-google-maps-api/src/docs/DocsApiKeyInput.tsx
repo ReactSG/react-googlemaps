@@ -1,4 +1,9 @@
-import { type ChangeEvent, Component, type FormEvent, type ReactNode } from 'react'
+import {
+  type ChangeEvent,
+  Component,
+  type FormEvent,
+  type ReactNode,
+} from 'react'
 import { setKey, getKey } from './docs-api-key'
 
 import LoadScript from '../LoadScript'
@@ -33,10 +38,14 @@ class DocsApiKeyInput extends Component<{}, DocsApiKeyInputState> {
 
     const key = getKey()
 
-    this.state = key ? { key, loadScript: true } : { key: '', loadScript: false }
+    this.state = key
+      ? { key, loadScript: true }
+      : { key: '', loadScript: false }
   }
 
-  onInputChange = ({ target: { value } }: ChangeEvent<HTMLInputElement>): void => {
+  onInputChange = ({
+    target: { value },
+  }: ChangeEvent<HTMLInputElement>): void => {
     this.setState(function setKey() {
       return {
         key: value,

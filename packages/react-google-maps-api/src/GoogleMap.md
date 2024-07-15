@@ -1,20 +1,20 @@
 # Google Map example
 
 ```jsx
-const { LoadScript } = require("./LoadScript");
-const ScriptLoaded = require("./docs/ScriptLoaded").default;
+const { LoadScript } = require('./LoadScript');
+const ScriptLoaded = require('./docs/ScriptLoaded').default;
 
 <ScriptLoaded>
   <GoogleMap
-    id="circle-example"
+    id='circle-example'
     mapContainerStyle={{
-      height: "400px",
-      width: "800px"
+      height: '400px',
+      width: '800px',
     }}
     zoom={7}
     center={{
       lat: -3.745,
-      lng: -38.523
+      lng: -38.523,
     }}
   />
 </ScriptLoaded>;
@@ -28,7 +28,7 @@ The GoogleMap component uses React Context internally to pass the map instance a
 
 ```js static
 import React from 'react'
-import { useGoogleMap } from '@react-google-maps/api'
+import { useGoogleMap } from '@reactsg/googlemaps'
 
 function PanningComponent() {
   const map = useGoogleMap()

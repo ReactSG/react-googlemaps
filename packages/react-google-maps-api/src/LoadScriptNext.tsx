@@ -4,10 +4,10 @@ import { DefaultLoadingElement } from './LoadScript'
 import { useLoadScript, UseLoadScriptOptions } from './useLoadScript'
 
 export interface LoadScriptNextProps extends UseLoadScriptOptions {
-  loadingElement?: ReactElement | undefined
-  onLoad?: (() => void) | undefined
-  onError?: ((error: Error) => void) | undefined
-  onUnmount?: (() => void) | undefined
+  loadingElement?: ReactElement
+  onLoad?: () => void
+  onError?: (error: Error) => void
+  onUnmount?: () => void
   children: ReactElement
 }
 

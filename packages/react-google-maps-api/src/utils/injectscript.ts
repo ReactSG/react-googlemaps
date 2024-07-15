@@ -11,13 +11,20 @@ interface InjectScriptArg {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function injectScript({ url, id, nonce }: InjectScriptArg): Promise<any> {
+export function injectScript({
+  url,
+  id,
+  nonce,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+}: InjectScriptArg): Promise<any> {
   if (!isBrowser) {
     return Promise.reject(new Error('document is undefined'))
   }
 
   return new Promise(function injectScriptCallback(resolve, reject) {
-    const existingScript = document.getElementById(id) as HTMLScriptElement | undefined
+    const existingScript = document.getElementById(id) as
+      | HTMLScriptElement
+      | undefined
 
     const windowWithGoogleMap: WindowWithGoogleMap = window
 
@@ -40,7 +47,7 @@ export function injectScript({ url, id, nonce }: InjectScriptArg): Promise<any> 
             resolve(id)
           }
 
-          existingScript.onerror = function(err): void {
+          existingScript.onerror = function (err): void {
             if (originalErrorCallback) {
               originalErrorCallback(err)
             }
@@ -78,7 +85,7 @@ export function injectScript({ url, id, nonce }: InjectScriptArg): Promise<any> 
     }
 
     document.head.appendChild(script)
-  }).catch(err => {
+  }).catch((err) => {
     console.error('injectScript error: ', err)
 
     throw err

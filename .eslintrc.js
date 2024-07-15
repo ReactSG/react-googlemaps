@@ -50,7 +50,10 @@ module.exports = {
       'error',
       { varsIgnorePattern: '^_', argsIgnorePattern: '^_' },
     ],
-    '@typescript-eslint/no-use-before-define': ['error', { functions: false, classes: false }],
+    '@typescript-eslint/no-use-before-define': [
+      'error',
+      { functions: false, classes: false },
+    ],
     'security-node/detect-crlf': 'off',
   },
   settings: {
@@ -89,7 +92,7 @@ module.exports = {
     tsconfigRootDir: './',
   },
   env: {
-    "jest/globals": true,
+    'jest/globals': true,
     browser: true,
     es6: true,
   },

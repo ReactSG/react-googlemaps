@@ -20,7 +20,9 @@ export class Cluster {
   constructor(markerClusterer: Clusterer) {
     this.markerClusterer = markerClusterer
 
-    this.map = (this.markerClusterer as unknown as google.maps.OverlayView).getMap()
+    this.map = (
+      this.markerClusterer as unknown as google.maps.OverlayView
+    ).getMap()
 
     this.gridSize = this.markerClusterer.getGridSize()
 
@@ -87,7 +89,7 @@ export class Cluster {
   }
 
   remove() {
-    (this.clusterIcon as unknown as google.maps.OverlayView).setMap(null)
+    ;(this.clusterIcon as unknown as google.maps.OverlayView).setMap(null)
 
     this.markers = []
 
@@ -201,7 +203,10 @@ export class Cluster {
     }
 
     this.clusterIcon.useStyle(
-      this.markerClusterer.getCalculator()(this.markers, this.markerClusterer.getStyles().length)
+      this.markerClusterer.getCalculator()(
+        this.markers,
+        this.markerClusterer.getStyles().length
+      )
     )
 
     this.clusterIcon.show()

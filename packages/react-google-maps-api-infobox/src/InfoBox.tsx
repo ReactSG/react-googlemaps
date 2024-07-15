@@ -12,6 +12,7 @@ function cancelHandler(event: Event) {
 }
 
 export class InfoBox {
+  [x: string]: any
   content: string | Node
   disableAutoPan: boolean
   maxWidth: number
@@ -74,13 +75,16 @@ export class InfoBox {
 
     // Additional options (unique to InfoBox):
     this.boxClass = options.boxClass || 'infoBox'
-    this.boxStyle = options.boxStyle || {} as Partial<CSSStyleDeclaration>
+    this.boxStyle = options.boxStyle || ({} as Partial<CSSStyleDeclaration>)
     this.closeBoxMargin = options.closeBoxMargin || '2px'
-    this.closeBoxURL = options.closeBoxURL || 'http://www.google.com/intl/en_us/mapfiles/close.gif'
+    this.closeBoxURL =
+      options.closeBoxURL ||
+      'http://www.google.com/intl/en_us/mapfiles/close.gif'
     if (options.closeBoxURL === '') {
       this.closeBoxURL = ''
     }
-    this.infoBoxClearance = options.infoBoxClearance || new google.maps.Size(1, 1)
+    this.infoBoxClearance =
+      options.infoBoxClearance || new google.maps.Size(1, 1)
 
     if (typeof options.visible === 'undefined') {
       if (typeof options.isHidden === 'undefined') {
@@ -148,7 +152,8 @@ export class InfoBox {
         } else {
           // The following code is needed to overcome problems with MSIE
           const bw = this.getBoxWidths()
-          this.div.style.width = this.div.offsetWidth - bw.left - bw.right + 'px'
+          this.div.style.width =
+            this.div.offsetWidth - bw.left - bw.right + 'px'
           this.fixedWidthSet = false
         }
       }
@@ -181,15 +186,11 @@ export class InfoBox {
         // Workaround for Google bug that causes the cursor to change to a pointer
         // when the mouse moves over a marker underneath InfoBox.
         this.eventListeners.push(
-          google.maps.event.addListener(
-            this.div,
-            'mouseover',
-            () => {
-              if (this.div) {
-                this.div.style.cursor = 'default'
-              }
+          google.maps.event.addListener(this.div, 'mouseover', () => {
+            if (this.div) {
+              this.div.style.cursor = 'default'
             }
-          )
+          })
         )
       }
 
@@ -227,13 +228,14 @@ export class InfoBox {
   }
 
   addClickHandler(): void {
-    this.closeListener = this.div && this.div.firstChild && this.closeBoxURL !== ''
-      ? google.maps.event.addListener(
-        this.div.firstChild,
-        'click',
-        this.getCloseClickHandler()
-      )
-      : null;
+    this.closeListener =
+      this.div && this.div.firstChild && this.closeBoxURL !== ''
+        ? google.maps.event.addListener(
+            this.div.firstChild,
+            'click',
+            this.getCloseClickHandler()
+          )
+        : null
   }
 
   closeClickHandler(event: Event): void {
@@ -262,7 +264,11 @@ export class InfoBox {
     if (this.div && !disablePan) {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
-      const map: google.maps.Map | google.maps.StreetViewPanorama | null | undefined = this.getMap()
+      const map:
+        | google.maps.Map
+        | google.maps.StreetViewPanorama
+        | null
+        | undefined = this.getMap()
 
       // Only pan if attached to map, not panorama
       if (map instanceof google.maps.Map) {
@@ -311,7 +317,10 @@ export class InfoBox {
           } else {
             if (pixPosition.y < -iwOffsetY + padY) {
               yOffset = pixPosition.y + iwOffsetY - padY
-            } else if (pixPosition.y + iwHeight + iwOffsetY + padY > mapHeight) {
+            } else if (
+              pixPosition.y + iwHeight + iwOffsetY + padY >
+              mapHeight
+            ) {
               yOffset = pixPosition.y + iwHeight + iwOffsetY + padY - mapHeight
             }
           }
@@ -337,7 +346,6 @@ export class InfoBox {
       const boxStyle: Partial<CSSStyleDeclaration> = this.boxStyle
 
       for (const i in boxStyle) {
-
         if (Object.prototype.hasOwnProperty.call(boxStyle, i)) {
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
@@ -350,14 +358,19 @@ export class InfoBox {
       this.div.style.webkitTransform = 'translateZ(0)'
 
       // Fix up opacity style for benefit of MSIE
-      if (typeof this.div.style.opacity !== 'undefined' && this.div.style.opacity !== '') {
+      if (
+        typeof this.div.style.opacity !== 'undefined' &&
+        this.div.style.opacity !== ''
+      ) {
         // See http://www.quirksmode.org/css/opacity.html
         const opacity = parseFloat(this.div.style.opacity || '')
 
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         this.div.style.msFilter =
-          '"progid:DXImageTransform.Microsoft.Alpha(Opacity=' + opacity * 100 + ')"'
+          '"progid:DXImageTransform.Microsoft.Alpha(Opacity=' +
+          opacity * 100 +
+          ')"'
         this.div.style.filter = 'alpha(opacity=' + opacity * 100 + ')'
       }
 
@@ -436,7 +449,8 @@ export class InfoBox {
         this.div.style.left = pixPosition.x + this.pixelOffset.width + 'px'
 
         if (this.alignBottom) {
-          this.div.style.bottom = -(pixPosition.y + this.pixelOffset.height) + 'px'
+          this.div.style.bottom =
+            -(pixPosition.y + this.pixelOffset.height) + 'px'
         } else {
           this.div.style.top = pixPosition.y + this.pixelOffset.height + 'px'
         }
@@ -601,7 +615,11 @@ export class InfoBox {
   }
 
   getVisible(): boolean {
-    const map: google.maps.Map | google.maps.StreetViewPanorama | null | undefined = (this as unknown as google.maps.OverlayView).getMap()
+    const map:
+      | google.maps.Map
+      | google.maps.StreetViewPanorama
+      | null
+      | undefined = (this as unknown as google.maps.OverlayView).getMap()
 
     return typeof map === 'undefined' || map === null ? false : !this.isHidden
   }
@@ -654,7 +672,7 @@ export class InfoBox {
       )
     }
 
-    (this as unknown as google.maps.OverlayView).setMap(map)
+    ;(this as unknown as google.maps.OverlayView).setMap(map)
 
     if (this.div) {
       this.panBox()
@@ -699,13 +717,20 @@ export class InfoBox {
     this.setMap(null)
   }
 
-  extend<A extends typeof InfoBox>(obj1: A, obj2: typeof google.maps.OverlayView): A {
-    return function applyExtend(this: A, object: typeof google.maps.OverlayView): A {
+  extend<A extends typeof InfoBox>(
+    obj1: A,
+    obj2: typeof google.maps.OverlayView
+  ): A {
+    return function applyExtend(
+      this: A,
+      object: typeof google.maps.OverlayView
+    ): A {
       for (const property in object.prototype) {
         if (!Object.prototype.hasOwnProperty.call(this, property)) {
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
-          this.prototype[property] = object.prototype[property  as keyof google.maps.OverlayView]
+          this.prototype[property] =
+            object.prototype[property as keyof google.maps.OverlayView]
         }
       }
 

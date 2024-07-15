@@ -175,7 +175,7 @@ installed lerna
 
 ## 2.7.0 update typescript and dependencies
 
-## 2.6.0 "@googlemaps/markerclusterer": "1.0.8" GoogleMapsMarkerClusterer component, merged [https://github.com/JustFly1984/react-google-maps-api/pull/2895]( https://github.com/JustFly1984/react-google-maps-api/pull/2895) PR
+## 2.6.0 "@googlemaps/markerclusterer": "1.0.8" GoogleMapsMarkerClusterer component, merged [https://github.com/JustFly1984/react-google-maps-api/pull/2895](https://github.com/JustFly1984/react-google-maps-api/pull/2895) PR
 
 ## 2.5.0 useJsApiLoader before this patch sets loaded state after loader has loaded, even if the component has already unmounted. This should fixes it
 
@@ -199,7 +199,7 @@ installed lerna
 
 ## 1.12.0 added useJsApiLoader hook, based on @googlemaps/js-api-loader. New official way of loading googlemaps script
 
-## 1.11.0 updated  @types/googlemaps@3.40.0
+## 1.11.0 updated @types/googlemaps@3.40.0
 
 ## 1.10.0 updated typescript@4.0.2, merged fixes for OverlayView
 
@@ -215,7 +215,7 @@ installed lerna
 
 ## 1.9.3 fix Marker re-rendering in Cluster, fix MarkerClusterer performance
 
-## 1.9.2 fix typescript 3.9.3 errors in @react-google-maps/infobox Cluster and @react-google-maps/api HeatmapLayer components, fix docs
+## 1.9.2 fix typescript 3.9.3 errors in @react-google-maps/infobox Cluster and @reactsg/googlemaps HeatmapLayer components, fix docs
 
 ## 1,9.1 export MapContext
 

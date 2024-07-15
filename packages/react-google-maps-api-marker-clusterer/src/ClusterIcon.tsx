@@ -71,9 +71,8 @@ export class ClusterIcon {
 
     this.cMouseDownInCluster = null
     this.cDraggingMapByCluster = null
-    this.timeOut = null;
-
-    (this as unknown as google.maps.OverlayView).setMap(cluster.getMap()) // Note: this causes onAdd to be called
+    this.timeOut = null
+    ;(this as unknown as google.maps.OverlayView).setMap(cluster.getMap()) // Note: this causes onAdd to be called
 
     this.onBoundsChanged = this.onBoundsChanged.bind(this)
     this.onMouseDown = this.onMouseDown.bind(this)
@@ -123,29 +122,29 @@ export class ClusterIcon {
 
         const bounds = this.cluster.getBounds()
 
-        const map = (markerClusterer as unknown as google.maps.OverlayView).getMap()
+        const map = (
+          markerClusterer as unknown as google.maps.OverlayView
+        ).getMap()
 
         if (map !== null && 'fitBounds' in map) {
           map.fitBounds(bounds)
         }
 
-
         // There is a fix for Issue 170 here:
         this.timeOut = window.setTimeout(() => {
-          const map = (markerClusterer as unknown as google.maps.OverlayView).getMap()
+          const map = (
+            markerClusterer as unknown as google.maps.OverlayView
+          ).getMap()
 
           if (map !== null) {
             if ('fitBounds' in map) {
               map.fitBounds(bounds)
             }
 
-            const zoom = map.getZoom() || 0
+            const zoom = map.getZoom() ?? 0
 
             // Don't zoom beyond the max zoom level
-            if (
-              maxZoom !== null &&
-              zoom > maxZoom
-            ) {
+            if (maxZoom !== null && zoom > maxZoom) {
               map.setZoom(maxZoom + 1)
             }
           }
@@ -198,7 +197,9 @@ export class ClusterIcon {
       this.show()
     }
 
-    ;(this as unknown as google.maps.OverlayView).getPanes()?.overlayMouseTarget.appendChild(this.div)
+    ;(this as unknown as google.maps.OverlayView)
+      .getPanes()
+      ?.overlayMouseTarget.appendChild(this.div)
 
     const map = (this as unknown as google.maps.OverlayView).getMap()
 
@@ -267,20 +268,28 @@ export class ClusterIcon {
 
   show() {
     if (this.div && this.center) {
-      const divTitle = this.sums === null ||
-      typeof this.sums.title === 'undefined' ||
-      this.sums.title === '' ? this.cluster.getClusterer().getTitle() :  this.sums.title
+      const divTitle =
+        this.sums === null ||
+        typeof this.sums.title === 'undefined' ||
+        this.sums.title === ''
+          ? this.cluster.getClusterer().getTitle()
+          : this.sums.title
 
       // NOTE: values must be specified in px units
       const bp = this.backgroundPosition.split(' ')
 
-      const spriteH = parseInt(bp[0]?.replace(/^\s+|\s+$/g, '') || '0', 10)
-      const spriteV = parseInt(bp[1]?.replace(/^\s+|\s+$/g, '') || '0', 10)
+      const spriteH = parseInt(bp[0]?.replace(/^\s+|\s+$/g, '') ?? '0', 10)
+      const spriteV = parseInt(bp[1]?.replace(/^\s+|\s+$/g, '') ?? '0', 10)
 
       const pos = this.getPosFromLatLng(this.center)
 
       this.div.className = this.className
-      this.div .setAttribute('style', `cursor: pointer; position: absolute; top: ${pos !== null ? `${pos.y}px` : '0'}; left: ${pos !== null ? `${pos.x}px` : '0'}; width: ${this.width}px; height: ${this.height}px; `)
+      const posX = pos !== null ? `${pos.x}px` : '0'
+      const posY = pos !== null ? `${pos.y}px` : '0'
+      this.div.setAttribute(
+        'style',
+        `cursor: pointer; position: absolute; top: ${posY}; left: ${posX}; width: ${this.width}px; height: ${this.height}px; `
+      )
 
       const img = document.createElement('img')
 
@@ -288,7 +297,10 @@ export class ClusterIcon {
       img.src = this.url
       img.width = this.width
       img.height = this.height
-      img.setAttribute('style', `position: absolute; top: ${spriteV}px; left: ${spriteH}px`)
+      img.setAttribute(
+        'style',
+        `position: absolute; top: ${spriteV}px; left: ${spriteH}px`
+      )
 
       if (!this.cluster.getClusterer().enableRetinaIcons) {
         img.style.clip = `rect(-${spriteV}px, -${spriteH + this.width}px, -${
@@ -298,7 +310,10 @@ export class ClusterIcon {
 
       const textElm = document.createElement('div')
 
-      textElm .setAttribute('style', `position: absolute; top: ${this.anchorText[0]}px; left: ${this.anchorText[1]}px; color: ${this.textColor}; font-size: ${this.textSize}px; font-family: ${this.fontFamily}; font-weight: ${this.fontWeight}; fontStyle: ${this.fontStyle}; text-decoration: ${this.textDecoration}; text-align: center; width: ${this.width}px; line-height: ${this.height}px`)
+      textElm.setAttribute(
+        'style',
+        `position: absolute; top: ${this.anchorText[0]}px; left: ${this.anchorText[1]}px; color: ${this.textColor}; font-size: ${this.textSize}px; font-family: ${this.fontFamily}; font-weight: ${this.fontWeight}; fontStyle: ${this.fontStyle}; text-decoration: ${this.textDecoration}; text-align: center; width: ${this.width}px; line-height: ${this.height}px`
+      )
 
       if (this.sums?.text) textElm.innerText = `${this.sums?.text}`
       if (this.sums?.html) textElm.innerHTML = `${this.sums?.html}`
@@ -333,22 +348,22 @@ export class ClusterIcon {
         this.className = `${this.clusterClassName} ${style.className}`
       }
 
-      this.anchorText = style.anchorText || [0, 0]
-      this.anchorIcon = style.anchorIcon || [this.height / 2, this.width / 2]
+      this.anchorText = style.anchorText ?? [0, 0]
+      this.anchorIcon = style.anchorIcon ?? [this.height / 2, this.width / 2]
 
-      this.textColor = style.textColor || 'black'
+      this.textColor = style.textColor ?? 'black'
 
-      this.textSize = style.textSize || 11
+      this.textSize = style.textSize ?? 11
 
-      this.textDecoration = style.textDecoration || 'none'
+      this.textDecoration = style.textDecoration ?? 'none'
 
-      this.fontWeight = style.fontWeight || 'bold'
+      this.fontWeight = style.fontWeight ?? 'bold'
 
-      this.fontStyle = style.fontStyle || 'normal'
+      this.fontStyle = style.fontStyle ?? 'normal'
 
-      this.fontFamily = style.fontFamily || 'Arial,sans-serif'
+      this.fontFamily = style.fontFamily ?? 'Arial,sans-serif'
 
-      this.backgroundPosition = style.backgroundPosition || '0 0'
+      this.backgroundPosition = style.backgroundPosition ?? '0 0'
     }
   }
 
@@ -357,7 +372,9 @@ export class ClusterIcon {
   }
 
   getPosFromLatLng(latlng: google.maps.LatLng): google.maps.Point | null {
-    const pos = (this as unknown as google.maps.OverlayView).getProjection().fromLatLngToDivPixel(latlng)
+    const pos = (this as unknown as google.maps.OverlayView)
+      .getProjection()
+      .fromLatLngToDivPixel(latlng)
 
     if (pos !== null) {
       pos.x -= this.anchorIcon[1]

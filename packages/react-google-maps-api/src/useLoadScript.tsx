@@ -5,21 +5,24 @@ import invariant from 'invariant'
 import { isBrowser } from './utils/isbrowser'
 import { injectScript } from './utils/injectscript'
 import { preventGoogleFonts } from './utils/prevent-google-fonts'
-import { makeLoadScriptUrl, LoadScriptUrlOptions } from './utils/make-load-script-url'
+import {
+  makeLoadScriptUrl,
+  LoadScriptUrlOptions,
+} from './utils/make-load-script-url'
 
-import { defaultLoadScriptProps } from './LoadScript'
+import { DEFAULT_LOAD_SCRIPT_PROPS } from './LoadScript'
 
 export interface UseLoadScriptOptions extends LoadScriptUrlOptions {
-  id?: string | undefined
-  nonce?: string | undefined
-  preventGoogleFontsLoading?: boolean | undefined
+  id?: string
+  nonce?: string
+  preventGoogleFontsLoading?: boolean
 }
 
 let previouslyLoadedUrl: string
 
 export function useLoadScript({
-  id = defaultLoadScriptProps.id,
-  version = defaultLoadScriptProps.version,
+  id = DEFAULT_LOAD_SCRIPT_PROPS.id,
+  version = DEFAULT_LOAD_SCRIPT_PROPS.version,
   nonce,
   googleMapsApiKey,
   googleMapsClientId,
@@ -36,7 +39,7 @@ export function useLoadScript({
   url: string
 } {
   const isMounted = useRef(false)
-  const [isLoaded, setLoaded] = useState(false)
+  const [isLoaded, setIsLoaded] = useState(false)
   const [loadError, setLoadError] = useState<Error | undefined>(undefined)
 
   useEffect(function trackMountedState() {
@@ -76,7 +79,7 @@ export function useLoadScript({
     libraries,
     channel,
     mapIds,
-    authReferrerPolicy
+    authReferrerPolicy,
   })
 
   useEffect(
@@ -85,27 +88,28 @@ export function useLoadScript({
         return
       }
 
-      function setLoadedIfMounted(): void {
+      function setIsLoadedIfMounted(): void {
         if (isMounted.current) {
-          setLoaded(true)
+          setIsLoaded(true)
           previouslyLoadedUrl = url
         }
       }
 
-      if (window.google && window.google.maps && previouslyLoadedUrl === url) {
-        setLoadedIfMounted()
+      if (window?.google?.maps && previouslyLoadedUrl === url) {
+        setIsLoadedIfMounted()
         return
       }
 
       injectScript({ id, url, nonce })
-        .then(setLoadedIfMounted)
+        .then(setIsLoadedIfMounted)
         .catch(function handleInjectError(err) {
           if (isMounted.current) {
             setLoadError(err)
           }
           console.warn(`
-        There has been an Error with loading Google Maps API script, please check that you provided correct google API key (${googleMapsApiKey ||
-          '-'}) or Client ID (${googleMapsClientId || '-'})
+        There has been an Error with loading Google Maps API script, please check that you provided correct google API key (${
+          googleMapsApiKey || '-'
+        }) or Client ID (${googleMapsClientId ?? '-'})
         Otherwise it is a Network issue.
       `)
           console.error(err)
