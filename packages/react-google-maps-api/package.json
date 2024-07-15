@@ -1,7 +1,7 @@
 {
   "name": "@reactsg/googlemaps",
   "sideEffects": false,
-  "version": "24.7.5",
+  "version": "24.7.8",
   "description": "React.js Google Maps",
   "license": "MIT",
   "author": {
