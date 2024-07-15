@@ -21,17 +21,19 @@ jobs:
         with:
           node-version: '18'
 
-      - name: Install dependencies
-        run: npm install
+      # - name: Install dependencies
+      #   run: npm install
 
       # - name: Run tests
       #   run: npm test
+      - name: Configure npm for publishing
+        run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
 
       - name: Bump version and publish
         run: |
           cd packages/react-google-maps-api
           npm version patch
-          npm run build
+          yarn && yarn build
           npm publish --access public
 
         env:

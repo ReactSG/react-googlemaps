@@ -24,7 +24,7 @@
   },
   "scripts": {
     "build:api": "cd packages/react-google-maps-api && yarn && yarn build && cd ../..",
-    "publish:api": "cd packages/react-google-maps-api && yarn && yarn build && yarn publish . && cd ../..",
+    "publish:api": "cd packages/react-google-maps-api && yarn && yarn publish . && cd ../..",
     "build:clusterer": "cd packages/react-google-maps-api-marker-clusterer && yarn && yarn build && cd ../..",
     "build:infobox": "cd packages/react-google-maps-api-infobox && yarn && yarn build && cd ../..",
     "prebuild:docs": "yarn build:clusterer && yarn build:infobox",
@@ -152,5 +152,8 @@
     "hooks": {
       "pre-commit": "lint-staged"
     }
+  },
+  "dependencies": {
+    "invariant": "^2.2.4"
   }
 }
